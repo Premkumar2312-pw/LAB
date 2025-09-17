@@ -4,6 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.io.*;
 
+@SuppressWarnings("deprecation")
 public class DNSInfoResolver {
     public static void main(String[] args) {
         try {
