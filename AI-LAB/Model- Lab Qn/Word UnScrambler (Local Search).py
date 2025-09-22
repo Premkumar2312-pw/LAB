@@ -33,3 +33,21 @@ def local_search_unscramble(scrambled, dictionary, max_iter=5000):
 unscrambled = local_search_unscramble(scrambled_word, DICTIONARY)
 print("Scrambled:", scrambled_word)
 print("Unscrambled (best attempt):", unscrambled)
+
+
+##Method 2
+
+import random
+goal = input("Enter a word: ")
+s = ''.join(random.sample(goal, len(goal)))
+for _ in range(100):
+    i, j = random.sample(range(len(goal)), 2)
+    t = list(s)
+    t[i], t[j] = t[j], t[i]
+    t = ''.join(t)
+    print(t)
+    if sum(a == b for a, b in zip(t, goal)) >= sum(a == b for a, b in zip(s, goal)):
+        s = t
+    if s==goal:
+        break
+print("Unscrambled:", s)
