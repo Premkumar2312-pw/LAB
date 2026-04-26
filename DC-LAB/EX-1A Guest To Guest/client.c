@@ -16,31 +16,40 @@ int main() {
     scanf("%s", server_ip);
     getchar();
 
-    // Create socket
     sock = socket(AF_INET, SOCK_STREAM, 0);
 
-    // Configure server address
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(PORT);
     inet_pton(AF_INET, server_ip, &server_addr.sin_addr);
 
-    // Connect to server
     connect(sock, (struct sockaddr*)&server_addr, sizeof(server_addr));
-    printf("Connected to Chat Server\n");
+    printf("Connected to server\n");
 
     while (1) {
-        // Send message
+
+        // SEND
         printf("You: ");
         fgets(buffer, sizeof(buffer), stdin);
+
+        if (strncmp(buffer, "exit", 4) == 0) {
+            write(sock, buffer, strlen(buffer));
+            break;
+        }
+
         write(sock, buffer, strlen(buffer));
 
-        // Receive reply
+        // RECEIVE
         memset(buffer, 0, sizeof(buffer));
         read(sock, buffer, sizeof(buffer));
+
+        if (strncmp(buffer, "exit", 4) == 0) {
+            printf("Server disconnected\n");
+            break;
+        }
+
         printf("Server: %s", buffer);
     }
 
     close(sock);
-
     return 0;
 }
